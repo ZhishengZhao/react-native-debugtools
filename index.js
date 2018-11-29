@@ -1,114 +1,134 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, AppRegistry } from 'react-native';
-import StaticContainer from 'static-container';
+import React from 'react';
+import { Platform, View } from 'react-native';
+import RNRestart from 'react-native-restart';
+import { AsyncStorage, StyleSheet } from 'react-native';
+import Storage from 'react-native-storage';
+import RootSiblings from 'react-native-root-siblings';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-action-button';
+import { start as enableXHRInterceptor } from './src/utils'
+// 项目路由
+import debugIndex from './src/demos/index'; //调试目录
+import envSwitch from './src/env_switch/index'; //切换环境
+import logHttp from './src/netlog/http/index'; // 网络日志列表
+import logHttpDetail from './src/netlog/http/detail'; // 网络日志详情
 
+// 创建新的存储实例
+var storage = new Storage({
+  size: 1000,
+  storageBackend: AsyncStorage,
+  defaultExpires: null,
+  enableCache: true,
+})
+// 全局变量
+global.storage = storage
+global.currentEnv = ''
+// 初始化
+export const _initDeTools = (options) => {
+  if (!options.envList) {
+    console.log('初始化参数异常：环境变量options.envList为空')
+    return
+  }
+  // 初始化环境列表存储
+  initEnvListStore(options.envList)
+
+  // 初始化当前环境变量
+  initCurrentEnvStore(options.envList[0])
+
+  // 启动xhr拦截记录器
+  enableXHRInterceptor(options.blackList)
+}
+
+const initEnvListStore = (envList) => {
+  // 直接存储吧，直接覆盖掉
+  storage.save({
+    key: 'envList',
+    data: envList
+  })
+}
+
+const initCurrentEnvStore = (defaultEnv) => {
+  storage.load({
+    key: 'currentEnv'
+  }).then((env) => {
+    console.log('currentEnv-load:', env)
+    global.currentEnv = env
+  }).catch(() => {
+    console.log('currentEnv-load-null:')
+    storage.load({
+      key: 'currentEnv',
+      data: defaultEnv
+    }).then(() => {
+      global.currentEnv = defaultEnv
+    })
+  })
+}
+// 导出debug工具路由
+export const debugRoute = {
+  DebugDemos: { screen: debugIndex },
+  DebugEnvSwitch: { screen: envSwitch },
+  DebugLogHttp: { screen: logHttp },
+  DebugLogHttpDetail: { screen: logHttpDetail },
+}
+// 重启app方法
+export const restartApp = () => {
+  RNRestart.Restart()
+}
+// 导出storage给全局global对西那个覆盖不到的地方使用
+export const storage = storage
+
+// 初始化生成浮动按钮
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
+  container: Platform.select({
+    ios: {
+      position: 'absolute',
+      right: 0,
+      bottom: 145,
+      width: 175,
+      height: 5,
+      overflow: 'visible',
+    },
+    android: {
+      position: 'absolute',
+      right: 0,
+      bottom: 30,
+      width: 375,
+      height: 520,
+    }
+  }),
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+  actionButtonText: {
+    fontSize: 14,
+    color: 'white',
   }
 });
+export const generateDebugBtn = (navigation, envSwitchCallBack) => {
+  const _goPage = (page) => {
 
-class Provider extends Component {
-  getChildContext() {
-    return { store: this.props.store };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
-AppRegistry.setWrapperComponentProvider(function() {
-  return function RootSiblingsWrapper(props) {
-    return (
-      <View style={styles.container}>
-        {props.children}
-        <RootSiblings />
-      </View>
-    );
-  };
-});
-
-let uuid = 0;
-const triggers = [];
-class RootSiblings extends Component {
-  _updatedSiblings = {};
-  _siblings = {};
-  _stores = {};
-
-  constructor(props) {
-    super(props);
-    this._siblings = {};
-    triggers.push(this._update);
-  }
-
-  componentWillUnmount() {
-    triggers.splice(triggers.indexOf(this._update), 1);
-  }
-
-  _update = (id, element, callback, store) => {
-    const siblings = { ...this._siblings };
-    const stores = { ...this._stores };
-    if (siblings[id] && !element) {
-      delete siblings[id];
-      delete stores[id];
-    } else if (element) {
-      siblings[id] = element;
-      stores[id] = store;
+    if (page === 'DebugEnvSwitch') {
+      navigation.navigate('DebugEnvSwitch', {
+        callback: envSwitchCallBack
+      })
+    } else {
+      navigation.navigate(page)
     }
-    this._updatedSiblings[id] = true;
-    this._siblings = siblings;
-    this._stores = stores;
-    this.forceUpdate(callback);
-  };
-
-  render() {
-    const siblings = this._siblings;
-    const stores = this._stores;
-    const elements = [];
-    Object.keys(siblings).forEach(key => {
-      const element = siblings[key];
-      if (element) {
-        const sibling = (
-          <StaticContainer key={`root-sibling-${key}`} shouldUpdate={!!this._updatedSiblings[key]}>
-            {element}
-          </StaticContainer>
-        );
-
-        const store = stores[key];
-        if (store) {
-          elements.push(
-            <Provider store={store} key={`root-sibling-${key}-provider`}>
-              {sibling}
-            </Provider>
-          );
-        } else {
-          elements.push(sibling);
-        }
-      }
-    });
-    this._updatedSiblings = {};
-    return elements;
   }
-}
 
-export default class RootSiblingManager {
-  constructor(element, callback, store) {
-    const id = uuid++;
-    function update(element, callback, store) {
-      triggers.forEach(function(trigger) {
-        trigger(id, element, callback, store);
-      });
-    }
-
-    function destroy(callback) {
-      triggers.forEach(function(trigger) {
-        trigger(id, null, callback);
-      });
-    }
-
-    update(element, callback, store);
-    this.update = update;
-    this.destroy = destroy;
-  }
+  let sibling = global.currentEnv !== 'prod' ? new RootSiblings(<View style={styles.container}>
+    <ActionButton buttonColor="rgba(231,76,60,1)" position='right' verticalOrientation='up'>
+      <ActionButton.Item buttonColor='#9b59b6' title="切换环境" onPress={() => {_goPage('DebugEnvSwitch')}}>
+        <Icon name="ios-create-outline" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+      <ActionButton.Item buttonColor='#3498db' title="网络日志" onPress={() => {_goPage('DebugLogHttp')}}>
+        <Icon name="ios-notifications-off" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+      <ActionButton.Item buttonColor='#1abc9c' title="其他测试" onPress={() => {_goPage('DebugDemos')}}>
+        <Icon name="ios-done-all-outline" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+    </ActionButton>
+  </View>) : null
 }
