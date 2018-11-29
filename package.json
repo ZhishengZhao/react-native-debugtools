@@ -1,5 +1,5 @@
 {
-  "name": "react-native-react-native-debugtools",
+  "name": "react-native-debugtools",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,8 +11,14 @@
   ],
   "author": "",
   "license": "",
-  "peerDependencies": {
-    "react-native": "^0.41.2",
-    "react-native-windows": "0.41.0-rc.1"
+  "dependencies": {
+    "react": "^16.4.1",
+    "react-native": "^0.56.0",
+    "babel-preset-react-native": "^5.0.2",
+    "react-native-action-button": "^2.8.5",
+    "react-native-restart": "0.0.7",
+    "react-native-root-siblings": "^3.1.6",
+    "react-native-storage": "^0.2.3",
+    "react-native-vector-icons": "^6.1.0"
   }
 }
