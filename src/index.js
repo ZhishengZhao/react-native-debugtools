@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View, AsyncStorage, StyleSheet } from 'react-native';
-import RNRestart from 'react-native-restart';
+// import RNRestart from 'react-native-restart';
 import Storage from 'react-native-storage';
 import RootSiblings from 'react-native-root-siblings';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -71,7 +71,8 @@ export const debugRoute = {
 }
 // 重启app方法
 export const restartApp = () => {
-  RNRestart.Restart()
+  // TODO
+  // RNRestart.Restart()
 }
 // 导出storage给全局global对西那个覆盖不到的地方使用
 export const storage = storage
