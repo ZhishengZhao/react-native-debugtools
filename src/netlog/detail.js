@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
-import { px2dp } from '../../utils.js'
+import { px2dp } from '../utils.js'
 
 export default class App extends Component {
   constructor(props) {

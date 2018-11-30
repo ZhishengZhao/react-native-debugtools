@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Button} from 'react-native';
-import { px2dp } from '../../utils.js'
+import { px2dp } from '../utils.js'
 
 export default class App extends Component {
   constructor(props) {

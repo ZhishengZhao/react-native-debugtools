@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, Button, Alert} from 'react-native';
 import { px2dp } from '../utils.js'
 import axios from 'axios'
-import { restartApp } from '../index'
+import { restartApp } from '../../index'
 
 export default class App extends Component {
   static navigationOptions={
@@ -100,6 +100,7 @@ export default class App extends Component {
   }
 
   render() {
+    // <Button onPress={() => restartApp()} title="重启app" color="#584841"></Button>
     return (
       <View style={styles.page}>
         <Text style={styles.title}>当前测试环境: {this.state.curEnvirement}</Text>
@@ -107,7 +108,6 @@ export default class App extends Component {
         <Button onPress={() => this._dtSave()} title="存储测试" color="#841584"></Button>
         <Button onPress={() => this._dtLoad()} title="提取测试" color="#584841"></Button>
         <Button onPress={() => this._dtDelete()} title="清空网络日志存储" color="#584841"></Button>
-        <Button onPress={() => restartApp()} title="重启app" color="#584841"></Button>
         <View style={styles.container_bottom}>
           <View style={styles.container_label}>
             <Text style={styles.service_label}>提取测试数据：{this.state.logsStr}</Text>
