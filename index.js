@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
-import RNRestart from 'react-native-restart';
+// import RNRestart from 'react-native-restart';
 import { AsyncStorage, StyleSheet } from 'react-native';
 import Storage from 'react-native-storage';
 import RootSiblings from 'react-native-root-siblings';
@@ -72,7 +72,7 @@ export const debugRoute = {
 }
 // 重启app方法
 export const restartApp = () => {
-  RNRestart.Restart()
+  // RNRestart.Restart()
 }
 // 导出storage给全局global对西那个覆盖不到的地方使用
 export const storage = storage
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 });
 export const generateDebugBtn = (navigation, envSwitchCallBack) => {
   const _goPage = (page) => {
-
     if (page === 'DebugEnvSwitch') {
       navigation.navigate('DebugEnvSwitch', {
         callback: envSwitchCallBack
