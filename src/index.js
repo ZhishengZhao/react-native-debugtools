@@ -1,7 +1,6 @@
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, AsyncStorage, StyleSheet } from 'react-native';
 import RNRestart from 'react-native-restart';
-import { AsyncStorage, StyleSheet } from 'react-native';
 import Storage from 'react-native-storage';
 import RootSiblings from 'react-native-root-siblings';
 import Icon from 'react-native-vector-icons/Ionicons';
