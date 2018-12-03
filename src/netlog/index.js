@@ -2,8 +2,8 @@
  * 网络日志HTTP部分--日志详情
  */
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Button} from 'react-native';
-import { px2dp } from '../utils.js'
+import {StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import { px2dp } from '../utils'
 
 export default class App extends Component {
   constructor(props) {
@@ -12,11 +12,13 @@ export default class App extends Component {
       logList: []
     };
   }
+
   static navigationOptions={
-    title: '网络日志',
+    title: '网络日志'
   };
 
   _clearLogStorage = () => {
+    console.log('开始清空日志')
     global.storage.remove({
       key:'netLog'
     }).then((logs) => {
@@ -26,7 +28,7 @@ export default class App extends Component {
           logList: []
         }
       })
-
+      console.log('开始清空日志：完成；开始跳回')
       this.props.navigation.goBack()
     })
   }
@@ -39,7 +41,7 @@ export default class App extends Component {
       console.log('>>>>>> 加载数据:', logs)
       this.setState(previousState => {
         return {
-          logList: logs
+          logList: logs.reverse()
         }
       })
     }).catch((err) => {
@@ -75,7 +77,9 @@ export default class App extends Component {
             }}
           />
         </ScrollView>
-        <Text onPress={() => this._clearLogStorage()} style={styles.btn_clear}> Clear </Text>
+        <View style={styles.btn_container}>
+          <Text onPress={() => this._clearLogStorage()} style={styles.btn_clear}> Clear </Text>
+        </View>
       </View>
     );
   }
@@ -107,16 +111,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  btn_clear: {
+  btn_container: {
     position: 'absolute',
-    right: 30,
-    bottom: 160,
-    width: 60,
-    height: 60,
-    lineHeight: 60,
-    fontSize: 18,
-    textAlign: 'center',
+    left: 30,
+    bottom: 62,
+    width: 55,
+    height: 55,
     backgroundColor: '#ccc',
     borderRadius: 50,
+  },
+  btn_clear: {
+    lineHeight: 55,
+    fontSize: 18,
+    textAlign: 'center',
   }
 });

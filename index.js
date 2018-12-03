@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
-// import RNRestart from 'react-native-restart';
+import RNRestart from 'react-native-restart';
 import { AsyncStorage, StyleSheet } from 'react-native';
 import Storage from 'react-native-storage';
 import RootSiblings from 'react-native-root-siblings';
@@ -24,7 +24,7 @@ var storage = new Storage({
 global.storage = storage
 global.currentEnv = ''
 // 初始化
-export const _initDeTools = (options) => {
+export const initDTs = (options) => {
   if (!options.envList) {
     console.log('初始化参数异常：环境变量options.envList为空')
     return
@@ -72,7 +72,7 @@ export const debugRoute = {
 }
 // 重启app方法
 export const restartApp = () => {
-  // RNRestart.Restart()
+  RNRestart.Restart()
 }
 // 导出storage给全局global对西那个覆盖不到的地方使用
 export const storage = storage

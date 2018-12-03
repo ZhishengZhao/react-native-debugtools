@@ -3,19 +3,13 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, Button, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
 import { px2dp } from '../utils.js'
 import axios from 'axios'
 import { restartApp } from '../../index'
+import backBtn from '../common/backBtn'
 
 export default class App extends Component {
-  static navigationOptions={
-    headerTintColor:'#000',
-    headerTitle: (
-      <Text style={{ flex: 1, textAlign: 'center', color: '#222222', fontSize: px2dp(18)}}>调试demo</Text>
-    ),
-    headerRight: <View/>
-  };
   constructor(props) {
     super(props);
     this.state = {
@@ -24,10 +18,12 @@ export default class App extends Component {
     };
   }
 
+  static navigationOptions={
+    title: '调试demo'
+  };
+
   _ajaxTest = () => {
-    console.log('>>>>>>>>>_ajaxTest')
     axios.get('http://192.168.4.102:9998/mockjs/367/api/banner').then(response => {
-      // postPromise('/api/banner', {}).then(response => {
       this.setState(previousState => {
         return {
           responseTip: JSON.stringify(response)
@@ -103,6 +99,7 @@ export default class App extends Component {
     // <Button onPress={() => restartApp()} title="重启app" color="#584841"></Button>
     return (
       <View style={styles.page}>
+        <backBtn/>
         <Text style={styles.title}>当前测试环境: {this.state.curEnvirement}</Text>
         <Button onPress={() => this._ajaxTest()} title="发送请求测试" color="#158844"></Button>
         <Button onPress={() => this._dtSave()} title="存储测试" color="#841584"></Button>

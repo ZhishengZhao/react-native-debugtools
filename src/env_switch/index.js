@@ -5,7 +5,8 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import { px2dp } from '../utils.js'
+import { px2dp } from '../utils'
+import backBtn from '../common/backBtn'
 
 export default class App extends Component {
   constructor(props) {
@@ -15,12 +16,8 @@ export default class App extends Component {
     };
   }
 
-  static navigationOptions = {
-    headerTintColor:'#000',
-    headerTitle: (
-      <Text style={{ flex: 1, textAlign: 'center', color: '#222222', fontSize: px2dp(18) }}>切换测试环境</Text>
-    ),
-    headerRight: <View/>
+  static navigationOptions={
+    title: '切换测试环境'
   };
 
   _getEnvList() {
@@ -54,7 +51,7 @@ export default class App extends Component {
       }).then((logs) => {
         console.log('data-log removed')
       })
-      this.props.navigation.state.params.callback(item);
+      this.props.navigation.state.params.callback && this.props.navigation.state.params.callback(item)
       this.props.navigation.goBack()
     })
   }
@@ -65,6 +62,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.page}>
+        <backBtn/>
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <FlatList
             data={this.state.envList}
