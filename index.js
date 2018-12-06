@@ -4,7 +4,6 @@ import RNRestart from 'react-native-restart';
 import { AsyncStorage, StyleSheet } from 'react-native';
 import Storage from 'react-native-storage';
 import RootSiblings from 'react-native-root-siblings';
-import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
 import { start as enableXHRInterceptor } from './src/utils'
 // 项目路由
@@ -55,7 +54,7 @@ const initCurrentEnvStore = (defaultEnv) => {
     global.currentEnv = env
   }).catch(() => {
     console.log('currentEnv-load-null:')
-    storage.load({
+    storage.save({
       key: 'currentEnv',
       data: defaultEnv
     }).then(() => {
@@ -117,17 +116,28 @@ export const generateDebugBtn = (navigation, envSwitchCallBack) => {
     }
   }
 
-  let sibling = global.currentEnv !== 'prod' ? new RootSiblings(<View style={styles.container}>
+  let sibling = new RootSiblings(<View style={styles.container}>
     <ActionButton buttonColor="rgba(231,76,60,1)" position='right' verticalOrientation='up'>
       <ActionButton.Item buttonColor='#9b59b6' title="切换环境" onPress={() => {_goPage('DebugEnvSwitch')}}>
-        <Icon name="ios-create-outline" style={styles.actionButtonIcon} />
+        <Text style={styles.actionButtonIcon}>Env</Text>
       </ActionButton.Item>
       <ActionButton.Item buttonColor='#3498db' title="网络日志" onPress={() => {_goPage('DebugLogHttp')}}>
-        <Icon name="ios-notifications-off" style={styles.actionButtonIcon} />
+        <Text style={styles.actionButtonIcon}>Net</Text>
       </ActionButton.Item>
       <ActionButton.Item buttonColor='#1abc9c' title="其他测试" onPress={() => {_goPage('DebugDemos')}}>
-        <Icon name="ios-done-all-outline" style={styles.actionButtonIcon} />
+        <Text style={styles.actionButtonIcon}>Ops</Text>
       </ActionButton.Item>
     </ActionButton>
-  </View>) : null
+  </View>)
+}
+
+// 获取当前环境
+export const getCurrentEnv = () => {
+  storage.load({
+    key: 'currentEnv'
+  }).then((env) => {
+    return env
+  }).catch(() => {
+    return ''
+  })
 }

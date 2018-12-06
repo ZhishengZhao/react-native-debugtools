@@ -39,16 +39,16 @@ export function start(blackList) {
   });
   XHRInterceptor.setRequestHeaderCallback((header, value) => {
     message.requestHeaders[header] = value;
-    message.creatTime = new Date()
+    message.creatTime = new Date().toLocaleDateString()
   });
   XHRInterceptor.setHeaderReceivedCallback((header, value) => {
     message.responseHeaders[header] = value;
   });
   XHRInterceptor.setResponseCallback((status, _, payload) => {
     message.status = status
-    message.response = JSON.parse(payload || '{}');
-    message.requestHeaders = JSON.stringify(message.requestHeaders || {});
-    message.responseHeaders = JSON.stringify(message.responseHeaders || {});
+    message.response = payload || '{}';
+    message.requestHeaders = message.requestHeaders;
+    message.responseHeaders = message.responseHeaders;
     // console.log('>>>>>> 请求拦截成功，拦截内容：', message)
     let tempMessage = message
     global.storage.load({

@@ -39,8 +39,8 @@ export default class App extends Component {
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <Text style={styles.txt_url}>请求地址：{this.state.log.url}</Text>
           <Text>入参：{this.state.log.data}</Text>
-          <Text>请求头：{this.state.log.requestHeaders}</Text>
-          <Text>响应头：{this.state.log.responseHeaders}</Text>
+          <Text>请求头：{JSON.stringify(this.state.log.requestHeaders)}</Text>
+          <Text>响应头：{JSON.stringify(this.state.log.responseHeaders)}</Text>
           <Text>响应体：{JSON.stringify(this.state.log.response)}</Text>
         </ScrollView>
       </View>
@@ -52,8 +52,5 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  txt_url: {
-
   }
 });

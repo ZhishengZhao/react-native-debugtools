@@ -5,7 +5,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
 import { px2dp } from '../utils.js'
-import axios from 'axios'
 import { restartApp } from '../../index'
 import backBtn from '../common/backBtn'
 
@@ -23,7 +22,9 @@ export default class App extends Component {
   };
 
   _ajaxTest = () => {
-    axios.get('http://192.168.4.102:9998/mockjs/367/api/banner').then(response => {
+    fetch('http://192.168.4.102:9998/mockjs/367/api/banner', {
+      method: 'get'
+    }).then(response => {
       this.setState(previousState => {
         return {
           responseTip: JSON.stringify(response)
