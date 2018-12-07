@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
 import { px2dp } from '../utils'
-import backBtn from '../common/backBtn'
+import BackBtn from '../common/backBtn'
 
 export default class App extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <backBtn/>
+        <BackBtn/>
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <Text style={styles.txt_url}>请求地址：{this.state.log.url}</Text>
           <Text>入参：{this.state.log.data}</Text>

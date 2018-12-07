@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { px2dp } from '../utils'
-import backBtn from '../common/backBtn'
+import BackBtn from '../common/backBtn'
 
 export default class App extends Component {
   constructor(props) {
@@ -62,7 +62,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <backBtn/>
+        <BackBtn/>
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <FlatList
             data={this.state.envList}
