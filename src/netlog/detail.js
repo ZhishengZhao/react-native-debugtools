@@ -35,7 +35,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <BackBtn/>
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <Text style={styles.txt_url}>请求地址：{this.state.log.url}</Text>
           <Text>入参：{this.state.log.data}</Text>

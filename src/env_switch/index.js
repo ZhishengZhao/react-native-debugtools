@@ -62,7 +62,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.page}>
-        <BackBtn/>
         <ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
           <FlatList
             data={this.state.envList}

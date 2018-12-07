@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
 import { px2dp } from '../utils.js'
 import { restartApp } from '../../index'
-import backBtn from '../common/backBtn'
+import BackBtn from '../common/backBtn'
 
 export default class App extends Component {
   constructor(props) {
@@ -100,7 +100,6 @@ export default class App extends Component {
     // <Button onPress={() => restartApp()} title="重启app" color="#584841"></Button>
     return (
       <View style={styles.page}>
-        <backBtn/>
         <Text style={styles.title}>当前测试环境: {this.state.curEnvirement}</Text>
         <Button onPress={() => this._ajaxTest()} title="发送请求测试" color="#158844"></Button>
         <Button onPress={() => this._dtSave()} title="存储测试" color="#841584"></Button>
